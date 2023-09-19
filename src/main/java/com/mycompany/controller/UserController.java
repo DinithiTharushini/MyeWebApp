@@ -63,5 +63,10 @@ public class UserController {
         }
     }
 
+    @GetMapping("/report")
+    public String report(){
+        return "report";
+    }
+
 
 }
