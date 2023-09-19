@@ -15,12 +15,17 @@ import java.util.List;
 
 @Controller
 public class UserController {
-    @Autowired private UserService services;
+    private final UserService services;
+
+    @Autowired
+    public UserController(UserService services) {
+        this.services = services;
+    }
+
     @GetMapping("/users")
     public String showUserList(Model model){
-        List<User> listusers= services.ListAll();
+        List<User> listusers = services.ListAll();
         model.addAttribute("listusers",listusers);
-
         return "users";
     }
     @GetMapping("/users/new")
@@ -32,7 +37,7 @@ public class UserController {
     @PostMapping("users/save")
     public String saveUser(User user, RedirectAttributes ra){
         services.save(user);
-        ra.addFlashAttribute("message","user has beeen saved succcessfully");
+        ra.addFlashAttribute("message","user has been saved successfully");
 
         return "redirect:/users";
     }
@@ -45,7 +50,7 @@ public class UserController {
             model.addAttribute("PageTitle","Edit User (ID :"+id+")");
             return "/user_form";
         } catch (UserNotFoundException e) {
-            ra.addFlashAttribute("meaasage","the user has been edited succesfully");
+            ra.addFlashAttribute("message","the user has been edited successfully");
             return "redirect:/users";
         }
     }
@@ -62,6 +67,4 @@ public class UserController {
             return "redirect:/users";
         }
     }
-
-
 }

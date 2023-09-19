@@ -5,17 +5,24 @@ import com.mycompany.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mycompany.Exception.UserNotFoundException;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
+    private final UserRepository repo;
+
     @Autowired
-    private UserRepository repo;
+    public UserService(UserRepository repo) {
+        this.repo = repo;
+    }
 
     public List<User> ListAll(){
         return  (List<User>) repo.findAll();
     }
+
     public void save(User user){
         repo.save(user);
     }
@@ -32,4 +39,8 @@ public class UserService {
         repo.deleteById(id);
     }
 
+    public List<User> findByKeyword(String keyword){
+        List<User> firstnameList = repo.findByFirstnameContainingIgnoreCase(keyword);
+        return firstnameList;
+    }
 }
